@@ -34,21 +34,38 @@ export default function DashboardPage() {
                 return;
             }
 
+            // Fetch ideas
             const { data: ideasData } = await supabase
                 .from('ideas')
-                .select(`
-          id,
-          idea_summary,
-          created_at,
-          verdicts (
-            verdict,
-            created_at
-          )
-        `)
+                .select('id, idea_summary, created_at')
                 .eq('user_id', currentUser.id)
                 .order('created_at', { ascending: false });
 
-            setIdeas(ideasData || []);
+            if (!ideasData) {
+                setIdeas([]);
+                return;
+            }
+
+            // Fetch verdicts for all ideas
+            const ideaIds = ideasData.map(idea => idea.id);
+            const { data: verdictsData } = await supabase
+                .from('verdicts')
+                .select('idea_id, verdict, created_at')
+                .in('idea_id', ideaIds)
+                .order('created_at', { ascending: false });
+
+            // Combine ideas with their verdicts
+            const ideasWithVerdicts: Idea[] = ideasData.map(idea => ({
+                ...idea,
+                verdicts: verdictsData
+                    ?.filter(v => v.idea_id === idea.id)
+                    .map(v => ({
+                        verdict: v.verdict as 'go' | 'pivot' | 'kill',
+                        created_at: v.created_at
+                    })) || []
+            }));
+
+            setIdeas(ideasWithVerdicts);
         } catch (error) {
             console.error('Error loading dashboard:', error);
         } finally {

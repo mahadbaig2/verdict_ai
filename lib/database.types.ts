@@ -155,7 +155,19 @@ export interface Database {
             [_ in never]: never
         }
         Functions: {
-            [_ in never]: never
+            match_market_documents: {
+                Args: {
+                    query_embedding: number[]
+                    match_threshold?: number
+                    match_count?: number
+                }
+                Returns: Array<{
+                    id: string
+                    source: 'reddit' | 'competitor' | 'pricing'
+                    content: string
+                    similarity: number
+                }>
+            }
         }
         Enums: {
             [_ in never]: never
