@@ -22,7 +22,7 @@ export function DistributionGrid({ collaborators }: { collaborators: Collaborato
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <Share2 className="w-5 h-5" /> Distribution Levers
             </h2>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
                 {collaborators.map((collab, i) => (
                     <div key={i} className="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-white/20 transition-all hover:translate-y-[-2px] hover:shadow-lg hover:shadow-green-900/10">
                         <div className="flex items-center gap-2 mb-3">

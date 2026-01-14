@@ -51,7 +51,7 @@ export default function PrivacyPage() {
 
                     <h3 className="text-white font-serif text-2xl mt-12 mb-6">5. Contact Us</h3>
                     <p>
-                        If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@verdict.ai" className="text-white hover:text-green-500 transition-colors underline decoration-green-500/50">privacy@verdict.ai</a>.
+                        If you have any questions about this Privacy Policy, please contact us at <a href="mailto:getverdictai@gmail.com" className="text-white hover:text-green-500 transition-colors underline decoration-green-500/50">getverdictai@gmail.com</a>.
                     </p>
                 </div>
             </main>

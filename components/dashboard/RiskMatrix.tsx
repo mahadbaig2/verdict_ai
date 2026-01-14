@@ -22,7 +22,7 @@ export function RiskMatrix({ risks }: { risks: Risk[] }) {
                             <p className="text-sm text-gray-400 font-light leading-relaxed">{risk.description}</p>
                         </div>
 
-                        <div className="flex gap-2 self-start">
+                        <div className="flex flex-col gap-2 self-start">
                             <div className="text-center px-4 py-2 bg-white/5 rounded border border-white/10 min-w-[70px]">
                                 <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Prob</div>
                                 <div className={`font-bold ${risk.probability === 'High' ? 'text-red-500' :

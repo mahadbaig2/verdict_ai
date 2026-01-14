@@ -52,8 +52,8 @@ export default function TermsPage() {
 
                 <div className="mt-24 pt-12 border-t border-white/5 text-center">
                     <p className="text-gray-500 mb-4">Questions?</p>
-                    <a href="mailto:support@verdict.ai" className="text-green-500 hover:text-green-400 font-medium transition-colors">
-                        support@verdict.ai
+                    <a href="mailto:getverdictai@gmail.com" className="text-green-500 hover:text-green-400 font-medium transition-colors">
+                        getverdictai@gmail.com
                     </a>
                 </div>
             </main>

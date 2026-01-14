@@ -4,16 +4,12 @@ import Link from 'next/link';
 import { ArrowRight, ShieldAlert, BarChart3, Lock, Zap, CheckCircle2, TrendingUp, Users, Mail, DollarSign } from 'lucide-react';
 import { useState } from 'react';
 import { WaitlistModal } from './WaitlistModal';
+import { PricingSection } from './PricingSection';
+
+import { LandingPageHeader } from './LandingPageHeader';
 
 export function LandingPage() {
     const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
-
-    const scrollToSection = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
 
     return (
         <div className="min-h-screen bg-gray-950 text-white selection:bg-green-900 selection:text-green-50 overflow-hidden font-sans">
@@ -26,32 +22,7 @@ export function LandingPage() {
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
             </div>
 
-            {/* Nav */}
-            <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-gray-950/80 backdrop-blur-md">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center font-serif font-black text-xl text-black">V</div>
-                        <span className="font-serif font-bold text-xl tracking-tight">Verdict.ai</span>
-                    </div>
-
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center gap-8">
-                        <button onClick={() => scrollToSection('about')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Philosophy</button>
-                        <button onClick={() => scrollToSection('pricing')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Pricing</button>
-                        <button onClick={() => scrollToSection('contact')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Contact</button>
-                    </div>
-
-                    <div className="flex items-center gap-6">
-                        <Link href="/auth" className="text-sm font-medium text-gray-400 hover:text-white transition-colors hidden sm:block">Sign In</Link>
-                        <Link
-                            href="/auth"
-                            className="px-5 py-2 bg-white text-black font-bold text-sm rounded-full hover:bg-gray-200 transition-colors"
-                        >
-                            Get Started
-                        </Link>
-                    </div>
-                </div>
-            </nav>
+            <LandingPageHeader onWaitlistClick={() => setIsWaitlistOpen(true)} />
 
             {/* Hero */}
             <main className="relative z-10 pt-32 pb-32 max-w-7xl mx-auto px-6">
@@ -157,51 +128,8 @@ export function LandingPage() {
                 </div>
 
                 {/* Pricing Section */}
-                <div id="pricing" className="mb-40 max-w-5xl mx-auto scroll-mt-24">
-                    <div className="text-center mb-16">
-                        <h2 className="font-serif text-4xl mb-4 text-white">Investment Required</h2>
-                        <p className="text-gray-400">Cheaper than a single consulting call. Way cheaper than a failed startup.</p>
-                    </div>
+                <PricingSection />
 
-                    <div className="max-w-md mx-auto relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-green-600 to-green-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        <div className="relative bg-gray-900 border border-white/10 p-8 rounded-2xl shadow-xl">
-                            <div className="flex justify-between items-start mb-6">
-                                <div>
-                                    <h3 className="font-serif text-2xl font-bold text-white">Founder Pass</h3>
-                                    <p className="text-green-500 font-mono text-sm mt-1">LIFETIME ACCESS</p>
-                                </div>
-                                <div className="text-right">
-                                    <span className="text-4xl font-bold text-white">$19</span>
-                                    <span className="text-gray-500 block text-sm">one-time</span>
-                                </div>
-                            </div>
-
-                            <ul className="space-y-4 mb-8">
-                                {[
-                                    "Unlimited Idea Analyses",
-                                    "Deep Market Signal Search",
-                                    "Competitor Friction Analysis",
-                                    "30-Day Execution Plans",
-                                    "Exportable PDF Reports"
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-center gap-3 text-gray-300">
-                                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <Link
-                                href="/auth"
-                                className="block w-full py-4 bg-white text-black text-center font-bold rounded-lg hover:bg-gray-200 transition-colors"
-                            >
-                                Get Started Now
-                            </Link>
-                            <p className="text-center text-xs text-gray-500 mt-4">No subscription. No hidden fees.</p>
-                        </div>
-                    </div>
-                </div>
 
                 {/* Contact Section */}
                 <div id="contact" className="mb-32 text-center max-w-2xl mx-auto scroll-mt-24">
@@ -212,10 +140,10 @@ export function LandingPage() {
                             Have questions about the methodology? Want to partner with us? We read every email from a founder.
                         </p>
                         <a
-                            href="mailto:hello@verdict.ai"
+                            href="mailto:getverdictai@gmail.com"
                             className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors font-medium"
                         >
-                            hello@verdict.ai
+                            getverdictai@gmail.com
                         </a>
                     </div>
                 </div>
@@ -236,25 +164,6 @@ export function LandingPage() {
             </main>
 
             {/* Footer */}
-            <footer className="border-t border-white/5 py-12 bg-black text-sm">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-white rounded flex items-center justify-center font-serif font-bold text-black text-xs">V</div>
-                            <span className="font-serif text-white/50">Verdict.ai Ventures</span>
-                        </div>
-
-                        <div className="flex gap-8 text-gray-500">
-                            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-                            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        </div>
-
-                        <div className="text-xs font-mono text-gray-600">
-                            © {new Date().getFullYear()} VERDICT AI.
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }

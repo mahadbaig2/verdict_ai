@@ -8,6 +8,8 @@ import { Loader2 } from 'lucide-react';
 
 export default function AuthPage() {
     const [isSignUp, setIsSignUp] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -21,7 +23,7 @@ export default function AuthPage() {
 
         try {
             if (isSignUp) {
-                await signUp(email, password);
+                await signUp(email, password, firstName, lastName);
                 alert('Check your email to confirm your account!');
             } else {
                 await signIn(email, password);
@@ -53,6 +55,39 @@ export default function AuthPage() {
                 {/* Auth Form */}
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-2xl">
                     <form onSubmit={handleSubmit} className="space-y-5">
+                        {isSignUp && (
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="firstName" className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
+                                        First Name
+                                    </label>
+                                    <input
+                                        id="firstName"
+                                        type="text"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                        required={isSignUp}
+                                        className="w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:bg-white/[0.06] focus:border-green-500/50 transition-all font-mono text-sm"
+                                        placeholder="John"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="lastName" className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
+                                        Last Name
+                                    </label>
+                                    <input
+                                        id="lastName"
+                                        type="text"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                        required={isSignUp}
+                                        className="w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:bg-white/[0.06] focus:border-green-500/50 transition-all font-mono text-sm"
+                                        placeholder="Doe"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
                         <div>
                             <label htmlFor="email" className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
                                 Email Address

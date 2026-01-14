@@ -13,24 +13,45 @@ export interface Database {
                 Row: {
                     id: string
                     email: string
+                    first_name: string | null
+                    last_name: string | null
                     plan: 'free' | 'pro'
                     credits: number
+                    paddle_customer_id: string | null
+                    paddle_transaction_id: string | null
+                    lemon_squeezy_customer_id: string | null
+                    lemon_squeezy_order_id: string | null
+                    has_lifetime_access: boolean
                     created_at: string
                     updated_at: string
                 }
                 Insert: {
                     id: string
                     email: string
+                    first_name?: string | null
+                    last_name?: string | null
                     plan?: 'free' | 'pro'
                     credits?: number
+                    paddle_customer_id?: string | null
+                    paddle_transaction_id?: string | null
+                    lemon_squeezy_customer_id?: string | null
+                    lemon_squeezy_order_id?: string | null
+                    has_lifetime_access?: boolean
                     created_at?: string
                     updated_at?: string
                 }
                 Update: {
                     id?: string
                     email?: string
+                    first_name?: string | null
+                    last_name?: string | null
                     plan?: 'free' | 'pro'
                     credits?: number
+                    paddle_customer_id?: string | null
+                    paddle_transaction_id?: string | null
+                    lemon_squeezy_customer_id?: string | null
+                    lemon_squeezy_order_id?: string | null
+                    has_lifetime_access?: boolean
                     created_at?: string
                     updated_at?: string
                 }
