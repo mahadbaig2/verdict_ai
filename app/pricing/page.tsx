@@ -1,3 +1,5 @@
+'use client';
+
 import { PricingSection } from '@/components/PricingSection';
 import { LandingPageHeader } from '@/components/LandingPageHeader';
 import { Footer } from '@/components/Footer';
