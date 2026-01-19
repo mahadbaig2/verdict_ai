@@ -21,7 +21,7 @@ export default function TermsPage() {
 
                 <div className="prose prose-invert prose-lg max-w-none">
                     <p className="lead text-xl text-gray-300 mb-8">
-                        By using Verdict.ai ("Service"), you agree to be bound by these Terms. If you don't agree, please do not use our Service. We're here to give you honest feedback, not legal headaches, but we need these rules to operate.
+                        By using Verdict AI ("Service", "we", "us", or "our"), accessible at getverdictai.com, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our Service.
                     </p>
 
                     <h3 className="text-white font-serif text-2xl mt-12 mb-6">1. Usage & Credits</h3>
