@@ -2,35 +2,19 @@
 
 import { useState } from 'react';
 import { Zap, Check, Shield, Sparkles } from 'lucide-react';
+import { usePostHog } from 'posthog-js/react';
 import { useRouter } from 'next/navigation';
 
 export function PricingSection() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const posthog = usePostHog();
 
-    const handleCheckout = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch('/api/lemon-squeezy/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    variantId: process.env.NEXT_PUBLIC_LEMON_SQUEEZY_VARIANT_ID
-                }),
-            });
-
-            const data = await response.json();
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                throw new Error('Failed to get checkout URL');
-            }
-        } catch (error) {
-            console.error('Checkout error:', error);
-            alert('Failed to start checkout. Please try again.');
-        } finally {
-            setLoading(false);
-        }
+    const trackClick = (ctaName: string) => {
+        posthog.capture('cta_clicked', {
+            cta_name: ctaName,
+            page: 'pricing_section'
+        });
     };
 
     const features = [
@@ -97,7 +81,10 @@ export function PricingSection() {
                             </div>
 
                             <button
-                                onClick={handleCheckout}
+                                onClick={() => {
+                                    trackClick('pricing_get_lifetime_access');
+                                    window.location.href = process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL || "#";
+                                }}
                                 disabled={loading}
                                 className="w-full py-4 bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-green-500/20 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                             >
@@ -108,6 +95,7 @@ export function PricingSection() {
                                 )}
                                 {loading ? 'Preparing...' : 'Get Lifetime Access'}
                             </button>
+
 
                             <div className="mt-6 flex items-center justify-center gap-6 text-[10px] text-gray-500 font-mono uppercase tracking-tighter">
                                 <div className="flex items-center gap-1">
@@ -122,9 +110,7 @@ export function PricingSection() {
                 </div>
 
                 <div className="mt-16 text-center">
-                    <p className="text-gray-500 text-sm">
-                        Prefer a custom plan for your venture studio? <a href="mailto:getverdictai@gmail.com" className="text-green-500 hover:underline">Contact us</a>.
-                    </p>
+
                 </div>
             </div>
 
