@@ -9,8 +9,7 @@ import { useRouter } from 'next/navigation';
 interface UserProfile {
     id: string;
     email: string;
-    first_name: string | null;
-    last_name: string | null;
+    full_name: string | null;
     plan: 'free' | 'pro';
     credits: number;
 }
@@ -22,6 +21,8 @@ export default function SettingsPage() {
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [savingProfile, setSavingProfile] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -36,18 +37,44 @@ export default function SettingsPage() {
                 return;
             }
 
-            const { data: userData, error } = await supabase
+            const { data, error } = await supabase
                 .from('users')
                 .select('*')
                 .eq('id', currentUser.id)
                 .single();
 
             if (error) throw error;
+            const userData = data as any;
             setProfile(userData);
+            setFullName(userData.full_name || '');
         } catch (error) {
             console.error('Error loading settings:', error);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function handleProfileUpdate(e: React.FormEvent) {
+        e.preventDefault();
+        if (!profile) return;
+
+        setSavingProfile(true);
+        setMessage(null);
+
+        try {
+            const { error } = await supabase
+                .from('users')
+                .update({ full_name: fullName } as any)
+                .eq('id', profile.id);
+
+            if (error) throw error;
+
+            setProfile({ ...profile, full_name: fullName });
+            setMessage({ type: 'success', text: 'Profile updated successfully' });
+        } catch (error: any) {
+            setMessage({ type: 'error', text: error.message || 'Failed to update profile' });
+        } finally {
+            setSavingProfile(false);
         }
     }
 
@@ -107,18 +134,34 @@ export default function SettingsPage() {
                             <h2 className="text-white font-medium">Profile Information</h2>
                         </div>
                     </div>
-                    <div className="p-8 grid md:grid-cols-2 gap-8">
-                        <div>
-                            <label className="block text-gray-500 text-xs font-mono uppercase tracking-widest mb-2">Full Name</label>
-                            <div className="text-white text-lg">
-                                {profile.first_name} {profile.last_name}
-                                {!profile.first_name && <span className="text-gray-600 italic">Not set</span>}
+                    <div className="p-8">
+                        <form onSubmit={handleProfileUpdate} className="grid md:grid-cols-2 gap-8 items-end">
+                            <div>
+                                <label className="block text-gray-500 text-xs font-mono uppercase tracking-widest mb-2">Full Name</label>
+                                <input
+                                    type="text"
+                                    value={fullName}
+                                    onChange={(e) => setFullName(e.target.value)}
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-700 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all font-mono text-sm"
+                                    placeholder="Enter your full name"
+                                />
                             </div>
-                        </div>
-                        <div>
-                            <label className="block text-gray-500 text-xs font-mono uppercase tracking-widest mb-2">Email Address</label>
-                            <div className="text-white text-lg">{profile.email}</div>
-                        </div>
+                            <div className="flex flex-col gap-4">
+                                <label className="block text-gray-500 text-xs font-mono uppercase tracking-widest mb-2">Email Address</label>
+                                <div className="flex items-center gap-4">
+                                    <div className="flex-1 bg-white/[0.03] border border-white/5 rounded-xl px-4 py-3 text-gray-500 font-mono text-sm italic">
+                                        {profile.email}
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        disabled={savingProfile}
+                                        className="px-6 py-3 bg-white hover:bg-gray-200 disabled:bg-gray-800 disabled:text-gray-600 text-black font-bold uppercase tracking-wider text-xs rounded-xl transition-all shadow-xl shadow-white/5 active:scale-95 flex items-center gap-2"
+                                    >
+                                        {savingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Profile'}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </section>
 

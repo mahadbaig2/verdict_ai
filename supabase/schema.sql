@@ -6,6 +6,7 @@ CREATE EXTENSION IF NOT EXISTS "vector";
 CREATE TABLE IF NOT EXISTS public.users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT NOT NULL UNIQUE,
+  full_name TEXT,
   plan TEXT NOT NULL DEFAULT 'free' CHECK (plan IN ('free', 'pro')),
   credits INTEGER NOT NULL DEFAULT 3,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -101,9 +102,23 @@ CREATE POLICY "Service can insert market documents" ON public.market_documents
 -- Function to automatically create user profile on signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  is_pro BOOLEAN;
 BEGIN
-  INSERT INTO public.users (id, email, plan, credits)
-  VALUES (NEW.id, NEW.email, 'free', 3);
+  -- Check if user has an active entitlement
+  SELECT access INTO is_pro 
+  FROM public.entitlements 
+  WHERE email = NEW.email 
+  LIMIT 1;
+
+  IF is_pro IS TRUE THEN
+    INSERT INTO public.users (id, email, full_name, plan, credits)
+    VALUES (NEW.id, NEW.email, '', 'pro', 100);
+  ELSE
+    INSERT INTO public.users (id, email, full_name, plan, credits)
+    VALUES (NEW.id, NEW.email, '', 'free', 3);
+  END IF;
+  
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

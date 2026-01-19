@@ -4,13 +4,11 @@ import Link from 'next/link';
 import { ArrowRight, ShieldAlert, BarChart3, Lock, Zap, CheckCircle2, TrendingUp, Users, Mail, DollarSign } from 'lucide-react';
 import { useState } from 'react';
 import { usePostHog } from 'posthog-js/react';
-import { WaitlistModal } from './WaitlistModal';
 import { PricingSection } from './PricingSection';
 
 import { LandingPageHeader } from './LandingPageHeader';
 
 export function LandingPage() {
-    const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
     const posthog = usePostHog();
 
     const trackClick = (ctaName: string) => {
@@ -22,7 +20,6 @@ export function LandingPage() {
 
     return (
         <div className="min-h-screen bg-gray-950 text-white selection:bg-green-900 selection:text-green-50 overflow-hidden font-sans">
-            <WaitlistModal isOpen={isWaitlistOpen} onClose={() => setIsWaitlistOpen(false)} />
 
             {/* Background Effects */}
             <div className="fixed inset-0 z-0 pointer-events-none">
@@ -31,7 +28,7 @@ export function LandingPage() {
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
             </div>
 
-            <LandingPageHeader onWaitlistClick={() => setIsWaitlistOpen(true)} />
+            <LandingPageHeader />
 
             {/* Hero */}
             <main className="relative z-10 pt-32 pb-32 max-w-7xl mx-auto px-6">
@@ -54,9 +51,9 @@ export function LandingPage() {
                         <button
                             onClick={() => {
                                 trackClick('hero_get_started');
-                                setIsWaitlistOpen(true);
+                                window.open(process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL || "#", '_blank');
                             }}
-                            className="group relative px-8 py-4 bg-green-600 hover:bg-green-500 text-black font-bold text-lg rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(22,163,74,0.5)]"
+                            className="group relative px-8 py-4 bg-green-600 hover:bg-green-500 text-black font-bold text-lg rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(22,163,74,0.5)] cursor-pointer"
                         >
                             Get Started
                             <ArrowRight className="inline-block w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -140,7 +137,7 @@ export function LandingPage() {
                 </div>
 
                 {/* Pricing Section */}
-                <PricingSection onWaitlistClick={() => setIsWaitlistOpen(true)} />
+                <PricingSection />
 
 
                 {/* Contact Section */}
@@ -168,9 +165,9 @@ export function LandingPage() {
                     <button
                         onClick={() => {
                             trackClick('footer_analyze_idea');
-                            setIsWaitlistOpen(true);
+                            window.open(process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL || "#", '_blank');
                         }}
-                        className="inline-flex items-center px-8 py-4 bg-white text-black font-bold text-lg rounded-full hover:bg-gray-200 transition-colors"
+                        className="inline-flex items-center px-8 py-4 bg-white text-black font-bold text-lg rounded-full hover:bg-gray-200 transition-colors cursor-pointer"
                     >
                         Analyze My Idea <Zap className="w-5 h-5 ml-2 fill-black" />
                     </button>

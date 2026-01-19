@@ -3,11 +3,7 @@
 import Link from 'next/link';
 import { usePostHog } from 'posthog-js/react';
 
-interface LandingPageHeaderProps {
-    onWaitlistClick?: () => void;
-}
-
-export function LandingPageHeader({ onWaitlistClick }: LandingPageHeaderProps) {
+export function LandingPageHeader() {
     const posthog = usePostHog();
 
     const trackClick = (ctaName: string) => {
@@ -42,13 +38,13 @@ export function LandingPageHeader({ onWaitlistClick }: LandingPageHeaderProps) {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <Link href="/auth" onClick={() => trackClick('header_sign_in')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors hidden sm:block">Sign In</Link>
+                    <Link href="/auth" onClick={() => trackClick('header_sign_in')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors hidden sm:block cursor-pointer">Sign In</Link>
                     <button
                         onClick={() => {
                             trackClick('header_get_started');
-                            onWaitlistClick?.();
+                            window.open(process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL || "#", '_blank');
                         }}
-                        className="px-5 py-2 bg-white text-black font-bold text-sm rounded-full hover:bg-gray-200 transition-colors text-center"
+                        className="px-5 py-2 bg-white text-black font-bold text-sm rounded-full hover:bg-gray-200 transition-colors text-center cursor-pointer"
                     >
                         Get Started
                     </button>

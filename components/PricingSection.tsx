@@ -6,10 +6,9 @@ import { usePostHog } from 'posthog-js/react';
 import { useRouter } from 'next/navigation';
 
 interface PricingSectionProps {
-    onWaitlistClick?: () => void;
 }
 
-export function PricingSection({ onWaitlistClick }: PricingSectionProps) {
+export function PricingSection({ }: PricingSectionProps) {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const posthog = usePostHog();
@@ -87,10 +86,10 @@ export function PricingSection({ onWaitlistClick }: PricingSectionProps) {
                             <button
                                 onClick={() => {
                                     trackClick('pricing_get_lifetime_access');
-                                    onWaitlistClick?.();
+                                    window.open(process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL || "#", '_blank');
                                 }}
                                 disabled={loading}
-                                className="w-full py-4 bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-green-500/20 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full py-4 bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-green-500/20 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             >
                                 {loading ? (
                                     <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
@@ -99,10 +98,6 @@ export function PricingSection({ onWaitlistClick }: PricingSectionProps) {
                                 )}
                                 {loading ? 'Preparing...' : 'Get Lifetime Access'}
                             </button>
-
-                            <p className="text-[10px] text-gray-500 text-center mt-3 font-mono uppercase tracking-tighter">
-                                manual payment link sent within 12 hours
-                            </p>
 
 
                             <div className="mt-6 flex items-center justify-center gap-6 text-[10px] text-gray-500 font-mono uppercase tracking-tighter">

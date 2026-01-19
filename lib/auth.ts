@@ -1,13 +1,12 @@
 import { supabase } from './supabase';
 
-export async function signUp(email: string, password: string, firstName?: string, lastName?: string) {
+export async function signUp(email: string, password: string, fullName?: string) {
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
             data: {
-                first_name: firstName,
-                last_name: lastName,
+                full_name: fullName,
             }
         }
     });
@@ -15,16 +14,14 @@ export async function signUp(email: string, password: string, firstName?: string
     if (error) throw error;
 
     // If signup is successful, ensure the public user record is created/updated
-    // Usually a trigger handles this, but we can do it explicitly for safety
     if (data.user) {
         await supabase.from('users').upsert({
             id: data.user.id,
             email: email,
-            first_name: firstName,
-            last_name: lastName,
+            full_name: fullName,
             plan: 'free',
-            credits: 0
-        });
+            credits: 3
+        } as any);
     }
 
     return data;

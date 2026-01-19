@@ -7,9 +7,6 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 
 export default function AuthPage() {
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -22,13 +19,8 @@ export default function AuthPage() {
         setError('');
 
         try {
-            if (isSignUp) {
-                await signUp(email, password, firstName, lastName);
-                alert('Check your email to confirm your account!');
-            } else {
-                await signIn(email, password);
-                router.push('/dashboard');
-            }
+            await signIn(email, password);
+            router.push('/dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Authentication failed');
         } finally {
@@ -45,49 +37,16 @@ export default function AuthPage() {
                         <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center font-serif font-black text-3xl text-black mx-auto">V</div>
                     </Link>
                     <h1 className="text-3xl font-serif font-bold text-white mb-2">
-                        {isSignUp ? 'Create Account' : 'Welcome Back'}
+                        Welcome Back
                     </h1>
                     <p className="text-gray-400 text-sm">
-                        {isSignUp ? 'Start evaluating your startup ideas' : 'Sign in to access your dashboard'}
+                        Sign in to access your dashboard
                     </p>
                 </div>
 
                 {/* Auth Form */}
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-2xl">
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {isSignUp && (
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label htmlFor="firstName" className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                                        First Name
-                                    </label>
-                                    <input
-                                        id="firstName"
-                                        type="text"
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                        required={isSignUp}
-                                        className="w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:bg-white/[0.06] focus:border-green-500/50 transition-all font-mono text-sm"
-                                        placeholder="John"
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="lastName" className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                                        Last Name
-                                    </label>
-                                    <input
-                                        id="lastName"
-                                        type="text"
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                        required={isSignUp}
-                                        className="w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:bg-white/[0.06] focus:border-green-500/50 transition-all font-mono text-sm"
-                                        placeholder="Doe"
-                                    />
-                                </div>
-                            </div>
-                        )}
-
                         <div>
                             <label htmlFor="email" className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
                                 Email Address
@@ -132,22 +91,22 @@ export default function AuthPage() {
                             className="w-full px-6 py-4 bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-wider rounded-lg transition-all transform hover:translate-y-[-1px] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                         >
                             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {loading ? 'Authenticating...' : isSignUp ? 'Sign Up' : 'Sign In'}
+                            {loading ? 'Authenticating...' : 'Sign In'}
                         </button>
                     </form>
 
                     <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                        <button
-                            onClick={() => {
-                                setIsSignUp(!isSignUp);
-                                setError('');
-                            }}
-                            className="text-gray-400 hover:text-white text-xs uppercase tracking-wider font-bold transition-colors"
-                        >
-                            {isSignUp
-                                ? 'Existing user? Sign In'
-                                : "No account? Create one"}
-                        </button>
+                        <p className="text-gray-400 text-xs uppercase tracking-wider font-bold">
+                            No account?{" "}
+                            <a
+                                href={process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-green-500 hover:text-green-400 transition-colors"
+                            >
+                                Purchase Lifetime Access
+                            </a>
+                        </p>
                     </div>
                 </div>
 

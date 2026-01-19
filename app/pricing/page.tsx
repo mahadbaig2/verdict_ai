@@ -7,7 +7,7 @@ import { Footer } from '@/components/Footer';
 export default function PricingPage() {
     return (
         <div className="min-h-screen bg-black">
-            <LandingPageHeader onWaitlistClick={() => { }} />
+            <LandingPageHeader />
             <main className="pt-20">
                 <PricingSection />
 
