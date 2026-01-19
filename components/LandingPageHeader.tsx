@@ -1,12 +1,21 @@
 "use client";
 
 import Link from 'next/link';
+import { usePostHog } from 'posthog-js/react';
 
 interface LandingPageHeaderProps {
     onWaitlistClick?: () => void;
 }
 
 export function LandingPageHeader({ onWaitlistClick }: LandingPageHeaderProps) {
+    const posthog = usePostHog();
+
+    const trackClick = (ctaName: string) => {
+        posthog.capture('cta_clicked', {
+            cta_name: ctaName,
+            page: 'header'
+        });
+    };
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
@@ -33,13 +42,16 @@ export function LandingPageHeader({ onWaitlistClick }: LandingPageHeaderProps) {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <Link href="/auth" className="text-sm font-medium text-gray-400 hover:text-white transition-colors hidden sm:block">Sign In</Link>
-                    <Link
-                        href="/auth"
+                    <Link href="/auth" onClick={() => trackClick('header_sign_in')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors hidden sm:block">Sign In</Link>
+                    <button
+                        onClick={() => {
+                            trackClick('header_get_started');
+                            onWaitlistClick?.();
+                        }}
                         className="px-5 py-2 bg-white text-black font-bold text-sm rounded-full hover:bg-gray-200 transition-colors text-center"
                     >
                         Get Started
-                    </Link>
+                    </button>
                 </div>
             </div>
         </nav>

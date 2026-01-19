@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ArrowRight, ShieldAlert, BarChart3, Lock, Zap, CheckCircle2, TrendingUp, Users, Mail, DollarSign } from 'lucide-react';
 import { useState } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import { WaitlistModal } from './WaitlistModal';
 import { PricingSection } from './PricingSection';
 
@@ -10,6 +11,14 @@ import { LandingPageHeader } from './LandingPageHeader';
 
 export function LandingPage() {
     const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+    const posthog = usePostHog();
+
+    const trackClick = (ctaName: string) => {
+        posthog.capture('cta_clicked', {
+            cta_name: ctaName,
+            page: 'landing_page'
+        });
+    };
 
     return (
         <div className="min-h-screen bg-gray-950 text-white selection:bg-green-900 selection:text-green-50 overflow-hidden font-sans">
@@ -42,13 +51,16 @@ export function LandingPage() {
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <Link
-                            href="/auth"
+                        <button
+                            onClick={() => {
+                                trackClick('hero_get_started');
+                                setIsWaitlistOpen(true);
+                            }}
                             className="group relative px-8 py-4 bg-green-600 hover:bg-green-500 text-black font-bold text-lg rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(22,163,74,0.5)]"
                         >
                             Get Started
                             <ArrowRight className="inline-block w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        </button>
                     </div>
 
                     <div className="mt-12 text-sm text-gray-500 font-mono">
@@ -128,7 +140,7 @@ export function LandingPage() {
                 </div>
 
                 {/* Pricing Section */}
-                <PricingSection />
+                <PricingSection onWaitlistClick={() => setIsWaitlistOpen(true)} />
 
 
                 {/* Contact Section */}
@@ -153,12 +165,15 @@ export function LandingPage() {
                     <h2 className="font-serif text-4xl md:text-5xl font-medium text-white mb-8">
                         Ready to face the truth?
                     </h2>
-                    <Link
-                        href="/auth"
+                    <button
+                        onClick={() => {
+                            trackClick('footer_analyze_idea');
+                            setIsWaitlistOpen(true);
+                        }}
                         className="inline-flex items-center px-8 py-4 bg-white text-black font-bold text-lg rounded-full hover:bg-gray-200 transition-colors"
                     >
                         Analyze My Idea <Zap className="w-5 h-5 ml-2 fill-black" />
-                    </Link>
+                    </button>
                 </div>
 
             </main>

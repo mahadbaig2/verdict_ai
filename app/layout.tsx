@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   description: "Stop building products nobody wants. Get a brutal, data-driven investment verdict on your startup idea in seconds.",
 };
 
+import { PostHogProvider } from "@/components/PostHogProvider";
+import { PostHogPageView } from "@/components/PostHogPageView";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,7 +37,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <PostHogProvider>
+          <PostHogPageView />
+          {children}
+        </PostHogProvider>
       </body>
     </html>
   );

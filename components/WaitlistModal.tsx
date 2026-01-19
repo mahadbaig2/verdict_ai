@@ -68,18 +68,16 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                 <div className="relative z-10 text-center">
                     {status === 'success' ? (
                         <div className="py-8 animate-in fade-in zoom-in duration-300">
-                            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Check className="w-8 h-8 text-green-500" />
-                            </div>
-                            <h3 className="text-2xl font-serif font-bold text-white mb-2">You're In.</h3>
-                            <p className="text-gray-400">{message}</p>
+                            <h3 className="text-2xl font-serif font-bold text-white mb-2">Request Received.</h3>
+                            <p className="text-gray-400 text-sm">Check your email (including spam) for the payment link within the next 12 hours.</p>
                         </div>
                     ) : (
                         <>
-                            <h3 className="text-2xl font-serif font-bold text-white mb-2">Join the Inner Circle</h3>
+                            <h3 className="text-2xl font-serif font-bold text-white mb-2">Request Access</h3>
                             <p className="text-gray-400 mb-8 text-sm leading-relaxed">
                                 Verdict AI is currently limiting access to ensure quality analysis.
-                                Join the waitlist to secure your spot.
+                                Request access now, and you will receive a manual payment link via email within 12 hours.
+                                Once payment is confirmed, your account will be activated.
                             </p>
 
                             <form onSubmit={handleSubmit} className="relative">
@@ -98,7 +96,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                                 >
                                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                                         <>
-                                            Join Waitlist <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                            Request Access <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                         </>
                                     )}
                                 </button>
@@ -106,7 +104,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                                     <p className="text-red-400 text-xs mt-3">{message}</p>
                                 )}
                                 <p className="text-gray-500 text-xs mt-4">
-                                    Limited to 100 spots this week.
+                                    Manual review within 12 hours.
                                 </p>
                             </form>
                         </>

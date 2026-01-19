@@ -5,7 +5,11 @@ import { Zap, Check, Shield, Sparkles } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import { useRouter } from 'next/navigation';
 
-export function PricingSection() {
+interface PricingSectionProps {
+    onWaitlistClick?: () => void;
+}
+
+export function PricingSection({ onWaitlistClick }: PricingSectionProps) {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const posthog = usePostHog();
@@ -83,7 +87,7 @@ export function PricingSection() {
                             <button
                                 onClick={() => {
                                     trackClick('pricing_get_lifetime_access');
-                                    window.location.href = process.env.NEXT_PUBLIC_GUMROAD_PRODUCT_URL || "#";
+                                    onWaitlistClick?.();
                                 }}
                                 disabled={loading}
                                 className="w-full py-4 bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-green-500/20 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
@@ -95,6 +99,10 @@ export function PricingSection() {
                                 )}
                                 {loading ? 'Preparing...' : 'Get Lifetime Access'}
                             </button>
+
+                            <p className="text-[10px] text-gray-500 text-center mt-3 font-mono uppercase tracking-tighter">
+                                manual payment link sent within 12 hours
+                            </p>
 
 
                             <div className="mt-6 flex items-center justify-center gap-6 text-[10px] text-gray-500 font-mono uppercase tracking-tighter">
@@ -110,7 +118,9 @@ export function PricingSection() {
                 </div>
 
                 <div className="mt-16 text-center">
-
+                    <p className="text-gray-500 text-sm">
+                        Prefer a custom plan for your venture studio? <a href="mailto:getverdictai@gmail.com" className="text-green-500 hover:underline">Contact us</a>.
+                    </p>
                 </div>
             </div>
 
